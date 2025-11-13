@@ -190,9 +190,9 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: http://localhost:3000
-        VITE_AUTH0_DOMAIN: dev-3ekq5zrafmsvadp2.us.auth0.com
-        VITE_AUTH0_CLIENT_ID: 57woiw4lqd7I7gQphwwTYaZjUJwyc7q7
-        VITE_AUTH0_AUDIENCE: https://todo-api.jdquintana.com
+        VITE_AUTH0_DOMAIN: example.us.auth0.com
+        VITE_AUTH0_CLIENT_ID: xxxxxxxxxxxxxxxxxxxxxxxxxxx
+        VITE_AUTH0_AUDIENCE: https://todo-api.example.com
     container_name: todo-frontend
     restart: unless-stopped
     depends_on:
