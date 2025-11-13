@@ -170,48 +170,35 @@ http://localhost:3000
 # 📦 Contenido del `docker-compose.yml`
 
 ```yaml
+version: "3.9"
+
 services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: todo-backend
     restart: unless-stopped
-    depends_on:
-      - mongo
-    environment:
-      NODE_ENV: production
-      PORT: 3000
-      MONGO_URI: ${DATABASE_URL}
-      AUTH0_ISSUER_URL: ${AUTH0_ISSUER_BASE_URL}
-      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
-      AUTH0_JWKS_URI: ${AUTH0_ISSUER_BASE_URL}.well-known/jwks.json
+    env_file:
+      - ./backend/.env
     ports:
       - "3000:3000"
 
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3000
+        VITE_AUTH0_DOMAIN: dev-3ekq5zrafmsvadp2.us.auth0.com
+        VITE_AUTH0_CLIENT_ID: 57woiw4lqd7I7gQphwwTYaZjUJwyc7q7
+        VITE_AUTH0_AUDIENCE: https://todo-api.jdquintana.com
     container_name: todo-frontend
     restart: unless-stopped
     depends_on:
       - backend
-    environment:
-      VITE_AUTH0_DOMAIN: ${VITE_AUTH0_DOMAIN}
-      VITE_AUTH0_CLIENT_ID: ${VITE_AUTH0_CLIENT_ID}
-      VITE_AUTH0_AUDIENCE: ${VITE_AUTH0_AUDIENCE}
-      VITE_API_URL: http://backend:3000
     ports:
       - "5173:80"
-
-  mongo:
-    image: mongo:6
-    container_name: todo-mongo
-    restart: unless-stopped
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:
 ```
 
 ---
